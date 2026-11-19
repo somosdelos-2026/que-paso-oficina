@@ -218,12 +218,78 @@ ul.tree ul>li:not(:last-child):after{content:"";position:absolute;left:-20px;top
 .m-note{animation:note 2.4s ease-out infinite}
 .m-note.n2{animation-delay:1.2s}
 .monster-btn.jump svg{animation:jump .7s ease-out}
-@media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+
+/* ===== Intro al cargar ===== */
+.intro{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:linear-gradient(160deg,#8EC5FC,#FFB88C 55%,#FF8FB1);overflow:hidden;animation:introOut .7s ease-in 2.5s forwards}
+.intro .ititle{position:relative;z-index:2;font-family:var(--font-d);font-weight:800;font-size:clamp(40px,11vw,76px);color:#fff;text-shadow:0 4px 0 rgba(0,0,0,.12),0 12px 30px rgba(120,40,80,.35);letter-spacing:-.02em;display:flex}
+.intro .ititle span{display:inline-block;animation:letter .7s cubic-bezier(.3,1.6,.5,1) both}
+.intro .isub{position:absolute;bottom:22%;left:0;right:0;text-align:center;color:#fff;font-weight:800;font-size:18px;z-index:2;animation:fadeUp .6s 1.2s both}
+.intro .fall{position:absolute;top:-60px;font-size:34px;animation:fall linear forwards;z-index:1}
+@keyframes introOut{to{opacity:0;visibility:hidden;transform:scale(1.06)}}
+@keyframes letter{0%{transform:translateY(-120px) rotate(-20deg);opacity:0}100%{transform:none;opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fall{to{transform:translateY(115vh) rotate(var(--r,360deg))}}
+
+/* ===== Portada ===== */
+.hero2{position:relative;padding:22px 18px 20px;display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;overflow:hidden}
+@media (max-width:560px){.hero2{grid-template-columns:1fr;text-align:center}.hero2 .pic{margin:0 auto}}
+.hero2 h2{font-family:var(--font-d);font-size:clamp(26px,6vw,34px);font-weight:800;line-height:1.05;margin:0 0 8px;letter-spacing:-.02em}
+.hero2 h2 em{font-style:normal;background:linear-gradient(90deg,#FF375F,#FF9F0A,#AF52DE,#007AFF);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:grad 6s linear infinite}
+.hero2 p{margin:0;font-size:15px;color:var(--sec);font-weight:500}
+.hero2 .pic{position:relative;width:190px;height:190px;flex:none}
+.hero2 .pic img{width:100%;height:100%;object-fit:cover;border-radius:46% 54% 50% 50%/55% 45% 55% 45%;border:5px solid #fff;box-shadow:0 14px 34px rgba(80,30,90,.28);animation:blob 8s ease-in-out infinite,bob 3.2s ease-in-out infinite}
+.hero2 .orb{position:absolute;font-size:28px;animation:orbit 7s linear infinite;left:50%;top:50%;margin:-16px}
+.hero2 .orb:nth-of-type(2){animation-delay:-1.75s}.hero2 .orb:nth-of-type(3){animation-delay:-3.5s}.hero2 .orb:nth-of-type(4){animation-delay:-5.25s}
+.hero2 .stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+@media (max-width:560px){.hero2 .stats{justify-content:center}}
+.hero2 .stat{background:var(--fill);border-radius:14px;padding:7px 12px;font-size:13px;font-weight:700}
+.hero2 .stat b{font-size:18px;color:var(--tarea);font-variant-numeric:tabular-nums;margin-right:3px}
+@keyframes grad{to{background-position:300% 0}}
+@keyframes blob{0%,100%{border-radius:46% 54% 50% 50%/55% 45% 55% 45%}50%{border-radius:55% 45% 42% 58%/45% 58% 42% 55%}}
+@keyframes bob{0%,100%{translate:0 0}50%{translate:0 -8px}}
+@keyframes orbit{from{transform:rotate(0) translateX(112px) rotate(0)}to{transform:rotate(360deg) translateX(112px) rotate(-360deg)}}
+
+/* ===== Contador de tareas ===== */
+.tcount{display:inline-flex;align-items:center;gap:4px;background:var(--tarea);color:#fff;font-size:12px;font-weight:800;border-radius:99px;padding:2px 9px;box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.tcount.bump{animation:bump .5s cubic-bezier(.3,1.8,.5,1)}
+@keyframes bump{0%{transform:scale(.6)}100%{transform:none}}
+
+/* ===== Tarjeta informativa (antes "preguntale a Claude") ===== */
+.info{padding:16px;display:flex;gap:14px;align-items:center}
+.info img{flex:none;width:96px;height:96px;object-fit:cover;border-radius:20px;border:3px solid #fff;box-shadow:0 6px 16px rgba(0,0,0,.15);transform:rotate(-4deg);transition:transform .4s cubic-bezier(.3,1.6,.5,1)}
+.info:hover img{transform:rotate(4deg) scale(1.05)}
+.info h2{font-size:18px;font-weight:800;margin:0 0 4px;letter-spacing:-.01em}
+.info p{margin:0;font-size:15px;color:var(--sec)}
+.info p b{color:var(--label)}
+
+/* ===== Postal en la frase ===== */
+.postal{display:block;width:100%;height:170px;object-fit:cover;object-position:50% 60%;border-radius:var(--r) var(--r) 0 0}
+.quotewrap{overflow:hidden;padding:0}
+.quotewrap .quote{padding:14px 18px 16px}
+
+/* ===== Aparecer al scrollear ===== */
+.reveal{opacity:0;transform:translateY(34px) scale(.97);transition:opacity .7s ease,transform .7s cubic-bezier(.2,1.2,.4,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ===== Lentes que siguen el scroll ===== */
+.shades{position:fixed;right:10px;top:0;z-index:20;width:58px;pointer-events:none;will-change:transform;filter:drop-shadow(0 4px 6px rgba(0,0,0,.25))}
+.shades svg{width:100%;height:auto;display:block;transition:transform .25s ease-out}
+.shades .bubble{position:absolute;right:62px;top:2px;background:#fff;color:#1C1C1E;font-size:12px;font-weight:800;border-radius:12px;padding:4px 9px;white-space:nowrap;opacity:0;transition:opacity .3s;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.shades.talk .bubble{opacity:1}
+.sbar{position:fixed;left:0;top:0;height:5px;z-index:21;background:linear-gradient(90deg,#FFD60A,#FF9F0A,#FF375F,#AF52DE);width:0;border-radius:0 4px 4px 0}
+.trail{position:fixed;z-index:19;pointer-events:none;font-size:20px;animation:trail 1s ease-out forwards}
+@keyframes trail{to{transform:translate(var(--tx),-40px) rotate(var(--tr));opacity:0}}
+@media (max-width:560px){.shades{width:44px;right:6px}.shades .bubble{right:48px}}
+
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.intro{display:none}.reveal{opacity:1;transform:none}}
 </style>
 </head>
 <body>
 
 <div class="sky" aria-hidden="true"></div>
+<div class="intro" id="intro" aria-hidden="true"><div class="ititle" id="ititle"></div><div class="isub">Modo vacaciones: activado 🏖️</div></div>
+<div class="sbar" id="sbar" aria-hidden="true"></div>
+<div class="shades" id="shades" aria-hidden="true"><span class="bubble" id="sbubble">¡Seguí bajando! 😎</span><svg viewBox="0 0 120 50"><path d="M4 12h112" stroke="#1C1C1E" stroke-width="5" stroke-linecap="round"/><path d="M8 12h42q2 24-20 26Q6 38 8 12z" fill="#1C1C1E"/><path d="M70 12h42q2 24-20 26Q68 38 70 12z" fill="#1C1C1E"/><path d="M14 16h12l-6 12z" fill="#fff" opacity=".35"/><path d="M76 16h12l-6 12z" fill="#fff" opacity=".35"/><path d="M50 14q10-6 20 0" stroke="#1C1C1E" stroke-width="5" fill="none"/></svg></div>
 <div class="wrap">
   <header class="nav">
     <div>
@@ -233,7 +299,16 @@ ul.tree ul>li:not(:last-child):after{content:"";position:absolute;left:-20px;top
     <span class="pill" id="mode">Conectando…</span>
   </header>
 
-  <section class="card office">
+  <section class="card hero2 reveal">
+    <div>
+      <h2>Mientras no estamos, <em>la oficina sigue</em> 🌴</h2>
+      <p>Dejá tareas, chismes y conflictos para quien está de vacaciones. Le llegan directo y los ve a la vuelta.</p>
+      <div class="stats" id="stats"></div>
+    </div>
+    <div class="pic"><img src="/img/pile.jpg" alt="Ratón de dibujito tomando sol en un inflable" width="190" height="190"><span class="orb">☀️</span><span class="orb">🍹</span><span class="orb">🕶️</span><span class="orb">🌊</span></div>
+  </section>
+
+  <section class="card office reveal">
     <div class="ohead"><div><div class="sect-title">Oficina de vacaciones</div><h2 id="officeTitle">Quién está en la playa</h2></div><button class="link" id="editVac" hidden>Editar</button></div>
     <div class="beach" id="beach"><span class="sun"></span><span class="cloud"></span><div class="nobody">Mirando quién se fue a la playa…</div></div>
     <div class="vaced" id="vaced" hidden>
@@ -242,7 +317,7 @@ ul.tree ul>li:not(:last-child):after{content:"";position:absolute;left:-20px;top
     </div>
   </section>
 
-  <form class="card composer" id="box">
+  <form class="card composer reveal" id="box">
     <div class="sect-title">¿Para quién es?</div>
     <div class="para" id="paraBox" role="radiogroup" aria-label="Para quién es"></div>
     <div class="seg" role="radiogroup" aria-label="Qué es">
@@ -260,26 +335,20 @@ ul.tree ul>li:not(:last-child):after{content:"";position:absolute;left:-20px;top
     <div class="note" id="note"></div>
   </form>
 
-  <section class="card ask">
-    <div class="head">
-      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.9L19 9.5l-4.1 3.2L16.2 18 12 15.1 7.8 18l1.3-5.3L5 9.5l5.2-1.6z"/></svg></span>
-      <div>
-        <h2>¿Tenés una duda que le ibas a preguntar a Agus?</h2>
-        <p>Preguntale a Claude. <b>Contale que estoy de vacaciones y preguntale qué haría yo.</b> Te va a sorprender la respuesta.</p>
-      </div>
+  <section class="card info reveal">
+    <img src="/img/libro.jpg" alt="Ratón de dibujito leyendo con anteojos de sol" width="96" height="96" loading="lazy">
+    <div>
+      <h2>¿Tenés una duda que le ibas a preguntar a Agus?</h2>
+      <p>Preguntale a Claude. <b>Contale que estoy de vacaciones y preguntale qué haría yo.</b> Te va a sorprender la respuesta.</p>
     </div>
-    <form class="inputrow" id="askForm" hidden>
-      <input id="f-ask" type="text" maxlength="300" placeholder="Ej: ¿el posteo de mañana va con o sin emojis?" aria-label="Tu duda">
-      <button class="sendb" id="askBtn" type="submit" disabled aria-label="Preguntar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5.5 11.5L12 5l6.5 6.5"/></svg></button>
-    </form>
-    <div class="answer" id="answer" hidden><span class="from">Lo que haría Agus, según Claude</span><span id="answerTxt"></span></div>
   </section>
 
-  <section class="card quote">
+  <div class="card quotewrap reveal"><img class="postal" src="/img/playa.jpg" alt="Ratón de dibujito tomando sol en la playa" loading="lazy">
+  <section class="quote">
     <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg></span>
     <div><div class="sect-title">Desde la reposera</div><div class="t" id="quote"></div></div>
     <button class="nx" id="nextq" aria-label="Otra frase">›</button>
-  </section>
+  </section></div>
 
   <section id="treeSec" style="display:flex;flex-direction:column;gap:12px" hidden>
     <div class="sechead">
@@ -486,8 +555,9 @@ const autorIn=$("#f-autor");try{autorIn.value=localStorage.getItem("quepaso-auto
 autorIn.addEventListener("change",()=>{try{localStorage.setItem("quepaso-autor",autorIn.value.trim())}catch(e){}});
 async function addEntry(t,texto,p){
   const base={tipo:t,texto,para,padre:p||null,autor:autorIn.value.trim()};
-  if(local){entries.push({id:newId(),...base,creado:Date.now(),revisado:false,revelado:false});lsSave();render();return}
+  if(local){entries.push({id:newId(),...base,creado:Date.now(),revisado:false,revelado:false});lsSave();if(t==="tarea"){tareas[para]=(tareas[para]||0)+1;renderBeach()}render();return}
   await api("entradas",{method:"POST",body:base});
+  if(t==="tarea"){try{const e=await api("estado");tareas=e.tareas||{};renderBeach()}catch(_){}}
   if(unlocked)loadEntries();
 }
 async function patch(id,data){
@@ -511,7 +581,9 @@ $("#box").addEventListener("submit",async ev=>{
 
 
 /* ---------- Oficina de vacaciones ---------- */
-let vac=[],vacDraft=null;
+let vac=[],vacDraft=null,tareas={},prevT={};
+function tcount(n){const nm=Object.keys(tareas).find(k=>k.toLowerCase()===String(n).toLowerCase());return nm?tareas[nm]:0}
+function tlabel(c){return "📋 "+c+(c===1?" tarea":" tareas")}
 const DAY=864e5;
 function parseD(s){const [y,m,d]=String(s).split("-").map(Number);return new Date(y,(m||1)-1,d||1)}
 function dm(s){const d=parseD(s);return d.getDate()+"/"+(d.getMonth()+1)}
@@ -519,7 +591,7 @@ function renderBeach(){
   const today=new Date();today.setHours(0,0,0,0);
   const list=vac.filter(p=>p&&p.nombre&&p.desde&&p.hasta&&parseD(p.hasta)>=today).map(p=>{const a=parseD(p.desde),b=parseD(p.hasta);
     return{...p,on:a<=today,left:Math.round((b-today)/DAY),until:Math.round((a-today)/DAY)}}).sort((x,y)=>(y.on-x.on)||(parseD(x.desde)-parseD(y.desde)));
-  renderPara();
+  renderPara();renderStats();
   const beach=$("#beach");[...beach.querySelectorAll(".bather,.nobody")].forEach(n=>n.remove());
   const on=list.filter(p=>p.on).length;
   $("#officeTitle").textContent=on?(on===1?"1 en la playa ahora":on+" en la playa ahora"):(list.length?"Próximos a la playa":"Todos trabajando");
@@ -530,10 +602,14 @@ function renderBeach(){
     const w=document.createElement("span");w.className="when";
     w.textContent=p.on?(p.left===0?"Último día de playa":`Le quedan ${p.left} ${p.left===1?"día":"días"}`):(p.until===1?"Se va mañana":`Se va en ${p.until} días`);
     const d=document.createElement("span");d.className="dates";d.textContent=`${dm(p.desde)} al ${dm(p.hasta)}`;
-    b.append(wrap.firstChild,t,w,d);
+    const c=tcount(p.nombre);const tc=document.createElement("span");tc.className="tcount"+(prevT[p.nombre]!==undefined&&prevT[p.nombre]!==c?" bump":"");tc.textContent=tlabel(c);tc.title="Tareas registradas para "+p.nombre;prevT[p.nombre]=c;
+    b.append(wrap.firstChild,t,w,d,tc);
     
     beach.append(b)});
 }
+function renderStats(){const box=$("#stats");if(!box)return;box.innerHTML="";const ppl=upcoming();
+  (ppl.length?ppl:[{nombre:"Agus"}]).forEach(p=>{const d=document.createElement("span");d.className="stat";const b=document.createElement("b");const target=tcount(p.nombre);b.textContent="0";d.append(b,document.createTextNode((target===1?"tarea":"tareas")+" para "+p.nombre));box.append(d);countUp(b,target)})}
+function countUp(el,to){if(!to){el.textContent="0";return}let i=0;const st=Math.max(1,Math.ceil(to/20));const t=setInterval(()=>{i=Math.min(to,i+st);el.textContent=i;if(i>=to)clearInterval(t)},45)}
 function upcoming(){const today=new Date();today.setHours(0,0,0,0);
   return vac.filter(p=>p&&p.nombre&&p.desde&&p.hasta&&parseD(p.hasta)>=today).sort((x,y)=>parseD(x.desde)-parseD(y.desde)).map(p=>({...p,on:parseD(p.desde)<=today}))}
 function renderPara(){const ppl=upcoming();const list=ppl.length?ppl:[{nombre:"Agus",monstruo:3,on:false,none:true}];
@@ -561,31 +637,45 @@ $("#vsave").addEventListener("click",async()=>{
   if(local){try{localStorage.setItem("quepaso-vac",JSON.stringify(vac))}catch(e){}return}
   try{await api("vacaciones",{method:"PUT",body:{gente}})}catch(e){note("No se pudo guardar la oficina de vacaciones.","err")}
 });
-/* ---------- Preguntale a Claude ---------- */
-let askOn=false,asking=false;
-const askIn=$("#f-ask");
-askIn.addEventListener("input",()=>{$("#askBtn").disabled=asking||!askIn.value.trim()});
-$("#askForm").addEventListener("submit",async ev=>{ev.preventDefault();const q=askIn.value.trim();if(!q||!askOn||asking)return;
-  asking=true;$("#answer").hidden=false;const out=$("#answerTxt");out.textContent="Pensando qué haría Agus…";$("#askBtn").disabled=true;
-  try{const r=await api("preguntar",{method:"POST",body:{q}});out.textContent=r.texto}
-  catch(e){out.textContent=e.status===429?"Muchas preguntas seguidas. Esperá un minuto.":"Claude está tomando sol. Probá de nuevo en un ratito."}
-  finally{asking=false;$("#askBtn").disabled=!askIn.value.trim()}
-});
+
+/* ---------- Intro, aparecer al scrollear y lentes ---------- */
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+(function intro(){const it=$("#intro");if(!it)return;if(reduce){it.remove();return}
+  const title="¿Qué pasóoo?";title.split("").forEach((ch,i)=>{const sp=document.createElement("span");sp.textContent=ch===" "?" ":ch;sp.style.animationDelay=(.25+i*.07)+"s";$("#ititle").append(sp)});
+  const EM=["🏖️","☀️","🌴","🍹","🕶️","🌊","🐚","🍉","⛱️","🩴","🥥","🦀"];
+  for(let i=0;i<34;i++){const f=document.createElement("span");f.className="fall";f.textContent=EM[i%EM.length];
+    f.style.left=Math.random()*100+"%";f.style.animationDuration=(1.6+Math.random()*1.6)+"s";f.style.animationDelay=(Math.random()*1.4)+"s";f.style.fontSize=(24+Math.random()*26)+"px";f.style.setProperty("--r",(Math.random()*720-360)+"deg");it.append(f)}
+  it.addEventListener("click",()=>it.remove());setTimeout(()=>it.remove(),3300)})();
+(function reveals(){const els=[...document.querySelectorAll(".reveal")];
+  if(reduce||!("IntersectionObserver" in window)){els.forEach(e=>e.classList.add("in"));return}
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12});
+  els.forEach((e,i)=>{e.style.transitionDelay=(i<2?2.4+i*.15:0)+"s";io.observe(e)});
+  setTimeout(()=>els.forEach(e=>e.style.transitionDelay="0s"),3400)})();
+(function shades(){const sh=$("#shades"),bar=$("#sbar"),bub=$("#sbubble");if(!sh)return;
+  const LINES=["¡Seguí bajando! 😎","Ojo que te estoy mirando 👀","Más abajo hay arena 🏖️","¿Ya dejaste tu tarea? 📋","Llegaste al fondo del mar 🐠"];
+  let last=0,lastY=scrollY,tTalk;
+  function upd(){const max=Math.max(1,document.documentElement.scrollHeight-innerHeight),p=Math.min(1,scrollY/max);
+    const y=110+p*(innerHeight-260),vel=scrollY-lastY;lastY=scrollY;
+    sh.style.transform=`translateY(${y}px)`;sh.querySelector("svg").style.transform=`rotate(${Math.max(-25,Math.min(25,vel*.8))}deg)`;bar.style.width=(p*100)+"%";
+    const idx=p>.97?4:Math.min(3,Math.floor(p*4));if(idx!==last){last=idx;bub.textContent=LINES[idx];sh.classList.add("talk");clearTimeout(tTalk);tTalk=setTimeout(()=>sh.classList.remove("talk"),1800)}
+    if(!reduce&&Math.abs(vel)>18&&Math.random()<.35){const t=document.createElement("span");t.className="trail";t.textContent=["🫧","✨","🐚","💦"][Math.floor(Math.random()*4)];
+      const r=sh.getBoundingClientRect();t.style.left=(r.left+r.width/2-10)+"px";t.style.top=(r.top+10)+"px";t.style.setProperty("--tx",(Math.random()*-60)+"px");t.style.setProperty("--tr",(Math.random()*90-45)+"deg");document.body.append(t);setTimeout(()=>t.remove(),1000)}}
+  let raf=0;addEventListener("scroll",()=>{if(!raf)raf=requestAnimationFrame(()=>{raf=0;upd()})},{passive:true});addEventListener("resize",upd);upd();
+  setTimeout(()=>{sh.classList.add("talk");setTimeout(()=>sh.classList.remove("talk"),2200)},3000)})();
 
 function startLocal(why){local=true;isOwner=true;$("#mode").textContent=why;
   note("Modo prueba: queda solo en este navegador.");const s=lsLoad();if(s){entries=s.entries||[]}
-  try{vac=JSON.parse(localStorage.getItem("quepaso-vac"))||null}catch(e){vac=null}if(!vac)vac=[{nombre:"Agus",desde:"2026-11-23",hasta:"2026-12-14",monstruo:3},{nombre:"Viki",desde:"2026-11-30",hasta:"2026-12-07",monstruo:5}];renderBeach();paintVault()}
+  try{vac=JSON.parse(localStorage.getItem("quepaso-vac"))||null}catch(e){vac=null}if(!vac)vac=[{nombre:"Agus",desde:"2026-11-23",hasta:"2026-12-14",monstruo:3},{nombre:"Viki",desde:"2026-11-30",hasta:"2026-12-07",monstruo:5}];tareas={};entries.forEach(e=>{if(e.tipo==="tarea"){const k=e.para||"Agus";tareas[k]=(tareas[k]||0)+1}});renderBeach();paintVault()}
 
 renderPara();$("#editVac").hidden=false;
 (async function(){
   let est;
   try{est=await api("estado")}catch(e){startLocal("Modo prueba");return}
   $("#mode").textContent="Oficina abierta";
-  vac=est.vacaciones||[];renderBeach();
-  askOn=!!est.preguntar;$("#askForm").hidden=!askOn;
-  paintVault();
+  tareas=est.tareas||{};vac=est.vacaciones||[];renderBeach();
+    paintVault();
   const k=ssGet();if(k)login(k,true);
-  setInterval(async()=>{try{const e=await api("estado");vac=e.vacaciones||[];if($("#vaced").hidden)renderBeach()}catch(e){}},60000);
+  setInterval(async()=>{try{const e=await api("estado");tareas=e.tareas||{};vac=e.vacaciones||[];if($("#vaced").hidden)renderBeach()}catch(e){}},60000);
   setInterval(()=>{if(unlocked&&!document.hidden)loadEntries()},30000);
 })();
 })();

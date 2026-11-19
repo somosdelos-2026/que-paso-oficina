@@ -1,7 +1,6 @@
 // API de "¿Qué pasóoo?": guarda las vacaciones y las entradas en Netlify Blobs
 // y revisa las claves del árbol del lado del servidor.
 import { getStore } from "@netlify/blobs";
-import Anthropic from "@anthropic-ai/sdk";
 import { timingSafeEqual, randomUUID } from "node:crypto";
 
 const TIPOS = new Set(["chisme", "tarea", "conflicto"]);
@@ -62,12 +61,6 @@ async function listEntradas() {
   return all.filter((e) => e && !e.borrado).sort((a, b) => a.creado - b.creado);
 }
 
-const PROMPT = (q) => `Agus trabaja en contenidos y redes en una agencia de Argentina y ahora está de vacaciones. Alguien de su equipo tenía esta duda para preguntarle a ella:
-
-"${q}"
-
-Respondé como si fueras quien la conoce bien y adivina qué haría Agus. Español rioplatense, cálido y con humor, máximo 80 palabras. Dale una respuesta concreta y accionable, con criterio y sin esperar a que vuelva. Si es algo realmente delicado (un cliente muy enojado, plata, algo legal), decí que lo carguen como Conflicto en la cajita de la app. No inventes datos de clientes. Sin listas ni títulos, solo el texto.`;
-
 export default async (req, context) => {
   const url = new URL(req.url);
   const parts = url.pathname.replace(/^\/api\/?/, "").split("/").filter(Boolean);
@@ -80,8 +73,11 @@ export default async (req, context) => {
   try {
     // Lo que ve cualquiera
     if (route === "estado" && req.method === "GET") {
-      const v = await readVacaciones();
-      return json({ vacaciones: v.gente || [], preguntar: Boolean(process.env.ANTHROPIC_API_KEY) });
+      const [v, entradas] = await Promise.all([readVacaciones(), listEntradas()]);
+      // Solo números: cuántas tareas tiene registradas cada persona (sin mostrar el contenido)
+      const tareas = {};
+      for (const e of entradas) if (e.tipo === "tarea") { const k = e.para || "Agus"; tareas[k] = (tareas[k] || 0) + 1; }
+      return json({ vacaciones: v.gente || [], tareas });
     }
 
     if (route === "vacaciones" && req.method === "PUT") {
@@ -111,25 +107,6 @@ export default async (req, context) => {
       };
       await store().setJSON("e/" + e.id, e);
       return json({ ok: true, id: e.id });
-    }
-
-    if (route === "preguntar" && req.method === "POST") {
-      if (!process.env.ANTHROPIC_API_KEY) return json({ error: "Sin clave de Claude" }, 501);
-      if (await tooMany(req, context, "preguntar", 5)) return json({ error: "Demasiadas preguntas" }, 429);
-      const q = str(body.q, 300);
-      if (!q) return json({ error: "Falta la pregunta" }, 400);
-      const client = new Anthropic();
-      const r = await client.beta.messages.create({
-        model: "claude-opus-5-5",
-        max_tokens: 2000,
-        output_config: { effort: "low" },
-        betas: ["server-side-fallback-2026-07-01"],
-        fallbacks: "default",
-        messages: [{ role: "user", content: PROMPT(q) }],
-      });
-      if (r.stop_reason === "refusal") return json({ texto: "Mejor preguntale eso a Agus cuando vuelva." });
-      const texto = r.content.filter((b) => b.type === "text").map((b) => b.text).join("").trim();
-      return json({ texto: texto || "Hoy Claude está mudo. Probá de nuevo." });
     }
 
     // Lo que necesita clave
